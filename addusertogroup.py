@@ -20,7 +20,7 @@ class AddUserToGroup(WXBot):
 
 		temp = groupname.decode('utf8')  
 		xx=u"([/u4e00-/u9fa5]+)"
-		pattern = re.compile(xx)  
+		pattern = re.compile(xx)
 		results =  pattern.findall(temp)
 		resu = ''
 		for result in results :

@@ -843,6 +843,34 @@ class WXBot:
         dic = r.json()
         return dic['BaseResponse']['Ret'] == 0
 
+    def create_group(self,uids):
+        """
+        创建群聊 zjp
+        """
+        if len(uids) < 2:
+            return "user number less"
+        
+        MemberList = []
+
+        for uid in uids:
+            MemberList.append({"UserName":uid})
+
+        url = self.base_uri + '/webwxcreatechatroom?r=' + str(int(time.time()))
+        params = {
+            "MemberList": MemberList,
+            "Topic": '',
+            "MemberCount" : len(uids),
+            "BaseRequest": self.base_request
+        }
+        headers = {'content-type': 'application/json; charset=UTF-8'}
+        data = json.dumps(params, ensure_ascii=False).encode('utf8')
+        try:
+            r = self.session.post(url, data=data, headers=headers)
+        except (ConnectionError, ReadTimeout):
+            return False
+        dic = r.json()
+        return dic['BaseResponse']['Ret'] == 0
+
     def add_friend_to_group(self,uid,group_name):
         """
         将好友加入到群聊中
