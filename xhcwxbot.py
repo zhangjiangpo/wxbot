@@ -18,7 +18,7 @@ class xhcMain(WXBot):
 
 	def self_request(self,url,data):
 		d = requests.post('http://gzh.xiaohongchun.com/'+url,data = data)
-		print d.json()
+		#print d.json()
 		if d.status_code != 200:#请求失败
 			print 'failed: ' + url
 		else:
@@ -27,17 +27,17 @@ class xhcMain(WXBot):
 	def login_success_init(self):#机器人初始化 遍历所有群组 发送服务器同步数据
 		for g in self.group_list:
 			time.sleep(2)
-			print "<<<<<<<<<<init group info>>>>>>>>>>"
+			#print "<<<<<<<<<<init group info>>>>>>>>>>"
 			self.self_request('api/group/inputinfo',self.handle_data(g['UserName'],g['NickName']))
 
 	def timediff(self,timestr,timeformat = '%H:%M:%S'):
-		print time.strftime(timeformat,time.localtime(time.time()))
-		print timestr
+		#print time.strftime(timeformat,time.localtime(time.time()))
+		#print timestr
 		return time.strftime(timeformat,time.localtime(time.time())) == timestr
 	
 	def handle_msg_all(self, msg):
 		
-		print msg
+		#print msg
 
 		#if msg['msg_type_id'] == 4 and msg['content']['type'] == 0: #normal msg
 			#uids = [];
@@ -54,10 +54,10 @@ class xhcMain(WXBot):
 			# msg['user']['name']  #group name 固定的（管理员可改变） 与 self.group_list的NickName 相对
 			self.get_contact(); #添加/删除 改名 重新初始化数据
 			self.batch_get_group_members() #批量获取所有群聊成员信息
-			print '<<<<<<<<<<<<<<<<<<group list>>>>>>>>>>>>>>>>>>>>>>>'
-			print self.group_list
-			print '<<<<<<<<<<<<<<<<<<group member list>>>>>>>>>>>>>>>>>>>>>>>'
-			print len(self.group_members[msg['user']['id']])
+			#print '<<<<<<<<<<<<<<<<<<group list>>>>>>>>>>>>>>>>>>>>>>>'
+			#print self.group_list
+			#print '<<<<<<<<<<<<<<<<<<group member list>>>>>>>>>>>>>>>>>>>>>>>'
+			#print len(self.group_members[msg['user']['id']])
 
 			data = {}
 
@@ -69,8 +69,8 @@ class xhcMain(WXBot):
 
 					data['oldname'] = msg['user']['name']
 
-			print '<<<<<<<<<<<<<<<<<<group change data>>>>>>>>>>>>>>>>>>>>>>';
-			print data;
+			#print '<<<<<<<<<<<<<<<<<<group change data>>>>>>>>>>>>>>>>>>>>>>';
+			#print data;
 
 			self.self_request('api/group/changeinfo',data);
 
@@ -89,7 +89,7 @@ class xhcMain(WXBot):
 
 def main():
     bot = xhcMain()
-    bot.DEBUG = True
+    bot.DEBUG = False
     bot.conf['qr'] = 'png'
     bot.is_big_contact = False
     bot.run()
