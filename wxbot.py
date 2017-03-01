@@ -448,6 +448,15 @@ class WXBot:
         """
         pass
 
+    def login_success_init(self):
+
+        pass
+
+    def handle_data(self,gid,gname):
+        pass
+    def self_request(self,url,data):
+        pass
+
     @staticmethod
     def proc_at_info(msg):
         if not msg:
@@ -1180,6 +1189,7 @@ class WXBot:
         if self.get_contact():
             print '[INFO] Get %d contacts' % len(self.contact_list)
             print '[INFO] Start to process messages .'
+        self.login_success_init()
         self.proc_msg()
 
     def get_uuid(self):
