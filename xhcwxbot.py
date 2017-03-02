@@ -37,7 +37,7 @@ class xhcMain(WXBot):
 	
 	def handle_msg_all(self, msg):
 		
-		#print msg
+		print msg
 
 		#if msg['msg_type_id'] == 4 and msg['content']['type'] == 0: #normal msg
 			#uids = [];
@@ -54,10 +54,10 @@ class xhcMain(WXBot):
 			# msg['user']['name']  #group name 固定的（管理员可改变） 与 self.group_list的NickName 相对
 			self.get_contact(); #添加/删除 改名 重新初始化数据
 			self.batch_get_group_members() #批量获取所有群聊成员信息
-			#print '<<<<<<<<<<<<<<<<<<group list>>>>>>>>>>>>>>>>>>>>>>>'
-			#print self.group_list
-			#print '<<<<<<<<<<<<<<<<<<group member list>>>>>>>>>>>>>>>>>>>>>>>'
-			#print len(self.group_members[msg['user']['id']])
+			print '<<<<<<<<<<<<<<<<<<group list>>>>>>>>>>>>>>>>>>>>>>>'
+			print self.group_list
+			print '<<<<<<<<<<<<<<<<<<group member list>>>>>>>>>>>>>>>>>>>>>>>'
+			print len(self.group_members[msg['user']['id']])
 
 			data = {}
 
