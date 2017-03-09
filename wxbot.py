@@ -84,6 +84,7 @@ class WXBot:
         self.sync_key_str = ''
         self.sync_key = []
         self.sync_host = ''
+        self.group_list_data = []
 
 
         self.batch_count = 50    #一次拉取50个联系人的信息
@@ -101,6 +102,8 @@ class WXBot:
         self.conf = {'qr': 'png'}
 
         self.my_account = {}  # 当前账户
+
+        self.group_welcome = {}
 
         # 所有相关账号: 联系人, 公众号, 群组, 特殊账号
         self.member_list = []
@@ -1320,7 +1323,27 @@ class WXBot:
         self.my_account = dic['User']
         self.sync_key_str = '|'.join([str(keyVal['Key']) + '_' + str(keyVal['Val'])
                                       for keyVal in self.sync_key['List']])
+        self.group_list_data = dic['ContactList']
         return dic['BaseResponse']['Ret'] == 0
+
+    def getInitData(self):
+        url = self.base_uri + '/webwxinit?r=%i&lang=en_US&pass_ticket=%s' % (int(time.time()), self.pass_ticket)
+        params = {
+            'BaseRequest': self.base_request
+        }
+        r = self.session.post(url, data=json.dumps(params))
+        r.encoding = 'utf-8'
+        dic = json.loads(r.text)
+        self.sync_key = dic['SyncKey']
+        self.my_account = dic['User']
+        self.sync_key_str = '|'.join([str(keyVal['Key']) + '_' + str(keyVal['Val'])
+                                      for keyVal in self.sync_key['List']])
+        #self.group_list_data = dic['ContactList']
+        charset = dic['ChatSet'].split(',')
+        list = []
+        for cs in charset:
+            if cs.index('@@') > -1:
+                list.append({"UserName":cs,})
 
     def status_notify(self):
         url = self.base_uri + '/webwxstatusnotify?lang=zh_CN&pass_ticket=%s' % self.pass_ticket
