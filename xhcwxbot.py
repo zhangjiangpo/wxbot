@@ -16,7 +16,7 @@ class xhcMain(WXBot):
 		return {'name':gname,'botname':self.my_account['NickName'],'number':len(self.group_members[gid]),'oldname':''}
 
 	def self_request(self,url,data):
-		d = requests.post('http://127.0.0.1:8010/'+url,data = data)
+		d = requests.post('http://wxgroup.xhcshop.com/'+url,data = data)
 		#print d.json()
 		if d.status_code != 200:#请求失败
 			print 'failed: ' + url
@@ -37,7 +37,6 @@ class xhcMain(WXBot):
 	
 	def handle_msg_all(self, msg):
 		
-		#print self.my_account
 
 		#if msg['msg_type_id'] == 4 and msg['content']['type'] == 0: #normal msg
 			#uids = [];
@@ -112,7 +111,7 @@ class xhcMain(WXBot):
 def main():
     bot = xhcMain()
     bot.DEBUG = False
-    bot.conf['qr'] = 'png'
+    bot.conf['qr'] = 'tty'
     bot.is_big_contact = False
     bot.run()
 
