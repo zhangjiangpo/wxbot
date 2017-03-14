@@ -24,7 +24,8 @@ class xhcMain(WXBot):
 			print 'success:' + url
 
 	def login_success_init(self):#机器人初始化 遍历所有群组 发送服务器同步数据
-
+		self.get_contact(); #添加/删除 改名 重新初始化数据
+		self.batch_get_group_members() #批量获取所有群聊成员信息
 		for g in self.group_list:
 			time.sleep(2)
 			#print "<<<<<<<<<<init group info>>>>>>>>>>"
@@ -55,6 +56,7 @@ class xhcMain(WXBot):
 				'time' : self.gettime('%Y-%m-%d %H:%M:%S')
 			}
 			r = json.dumps(contentmsg,ensure_ascii=False)
+			r = r + ','
 			with open(os.path.join(self.temp_pwd,self.gettime() + 'groupmsg.json'), 'a') as f:
 				f.write(r.encode('utf-8'))
 			#uids = [];
