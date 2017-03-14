@@ -34,11 +34,28 @@ class xhcMain(WXBot):
 		#print time.strftime(timeformat,time.localtime(time.time()))
 		#print timestr
 		return time.strftime(timeformat,time.localtime(time.time())) == timestr
+
+	def gettime(self, timeformat = '%Y-%m-%d'):
+		return time.strftime(timeformat,time.localtime(time.time()))
 	
 	def handle_msg_all(self, msg):
-		
 
-		#if msg['msg_type_id'] == 4 and msg['content']['type'] == 0: #normal msg
+		if (msg['msg_type_id'] == 3 or msg['msg_type_id'] == 1) and msg['content']['type'] == 0: #normal msg 1 self 3 other
+			username = ''
+			if msg['msg_type_id'] == 1:
+				username = self.my_account['NickName']
+			else:
+				username = msg['content']['user']['name']
+			contentmsg = {
+				'group' : msg['user']['name'],
+				'username' : username,
+				'content' : msg['content']['data'],
+				'time' : self.gettime('%Y-%m-%d %H:%M:%S')
+			}
+			r = json.dumps(contentmsg,ensure_ascii=False)
+			r = r + ','
+			with open(os.path.join(self.temp_pwd,self.gettime() + 'groupmsg.json'), 'a') as f:
+				f.write(r.encode('utf-8'))
 			#uids = [];
 			#for user in self.contact_list:
 				#if user["NickName"] == self.to_unicode("宁波") or user["NickName"] == self.to_unicode("小红唇测试") :
@@ -53,10 +70,6 @@ class xhcMain(WXBot):
 			# msg['user']['name']  #group name 固定的（管理员可改变） 与 self.group_list的NickName 相对
 			self.get_contact(); #添加/删除 改名 重新初始化数据
 			self.batch_get_group_members() #批量获取所有群聊成员信息
-			#print '<<<<<<<<<<<<<<<<<<group list>>>>>>>>>>>>>>>>>>>>>>>'
-			#print self.group_list
-			#print '<<<<<<<<<<<<<<<<<<group member list>>>>>>>>>>>>>>>>>>>>>>>'
-			#print len(self.group_members[msg['user']['id']])
 
 			data = {}
 
@@ -89,9 +102,6 @@ class xhcMain(WXBot):
 				if not self.send_img_msg_by_uid(os.path.join(self.temp_pwd,'joingroup.jpg'),msg['user']['id']):
 					
 					print 'send msg error'
-
-			#print '<<<<<<<<<<<<<<<<<<group change data>>>>>>>>>>>>>>>>>>>>>>';
-			#print data;
 
 			self.self_request('api/group/changeinfo',data);
 
