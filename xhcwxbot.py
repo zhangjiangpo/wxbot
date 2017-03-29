@@ -15,20 +15,29 @@ class xhcMain(WXBot):
 	def handle_data(self,gid,gname):
 		return {'name':gname,'botname':self.my_account['NickName'],'number':len(self.group_members[gid]),'oldname':''}
 
-	def self_request(self,url,data):
-		d = requests.post('http://wxgroup.xhcshop.com/'+url,data = data)
+	def self_request(self,url,data={},files={}):
+		#wxgroup.xhcshop.com
+		d = requests.post('http://wxgroup.xhcshop.com:8010/' + url,data = data)#,files = files
 		#print d.json()
 		if d.status_code != 200:#请求失败
 			print 'failed: ' + url
 		else:
 			print 'success:' + url
+	def send_qr_img(self,string):
+		#服务器生成 登录二维码图片
+		self.self_request('api/group/qrcode/string',{'string':string,'num':1})
+
+	def del_qr_img(self):
+		#登录成功 删除登录二维码图片
+		self.self_request('api/group/qrcode/del',{'num':1})
+
 
 	def login_success_init(self):#机器人初始化 遍历所有群组 发送服务器同步数据
 		try:
 			self.get_contact(); #添加/删除 改名 重新初始化数据
 			self.batch_get_group_members() #批量获取所有群聊成员信息
 			for g in self.group_list:
-				time.sleep(2)
+				#time.sleep(2)
 				print "<<<<<<<<<<init group info>>>>>>>>>>"
 				#print self.handle_data(g['UserName'],g['NickName'])
 				self.self_request('api/group/inputinfo',self.handle_data(g['UserName'],g['NickName']))
@@ -134,7 +143,7 @@ class xhcMain(WXBot):
 def main():
     bot = xhcMain()
     bot.DEBUG = False
-    bot.conf['qr'] = 'tty'
+    bot.conf['qr'] = 'png'#tty
     bot.is_big_contact = False
     bot.run()
 

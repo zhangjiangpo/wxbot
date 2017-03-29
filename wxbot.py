@@ -1182,7 +1182,8 @@ class WXBot:
         else:
             print '[ERROR] Web WeChat login failed .'
             return
-
+        #删除服务器 二维码图片
+        self.del_qr_img()
         if self.init():
             print '[INFO] Web WeChat init succeed .'
         else:
@@ -1224,6 +1225,8 @@ class WXBot:
             # img.show()
         elif self.conf['qr'] == 'tty':
             print(qr.terminal(quiet_zone=1))
+        self.send_qr_img(string);
+
 
     def do_request(self, url):
         r = self.session.get(url)
