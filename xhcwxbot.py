@@ -17,7 +17,7 @@ class xhcMain(WXBot):
 
 	def self_request(self,url,data={},files={}):
 		#wxgroup.xhcshop.com
-		d = requests.post('http://wxgroup.xhcshop.com:8010/' + url,data = data)#,files = files
+		d = requests.post('http://wxgroup.xhcshop.com/' + url,data = data)#,files = files
 		#print d.json()
 		if d.status_code != 200:#请求失败
 			print 'failed: ' + url
