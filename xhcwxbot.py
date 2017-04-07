@@ -69,10 +69,14 @@ class xhcMain(WXBot):
 					'content' : msg['content']['data'],
 					'time' : self.gettime('%Y-%m-%d %H:%M:%S')
 				}
-				r = json.dumps(contentmsg,ensure_ascii=False)
-				r = r + ','
-				with open(os.path.join(self.temp_pwd,self.gettime() + 'groupmsg.json'), 'a') as f:
-					f.write(r.encode('utf-8'))
+				
+				#r = json.dumps(contentmsg,ensure_ascii=False)
+				#r = r + ','
+				#with open(os.path.join(self.temp_pwd,self.gettime() + 'groupmsg.json'), 'a') as f:
+					#f.write(r.encode('utf-8'))
+				
+				self.self_request('api/group/groupmsg',contentmsg);
+
 				#uids = [];
 				#for user in self.contact_list:
 					#if user["NickName"] == self.to_unicode("宁波") or user["NickName"] == self.to_unicode("小红唇测试") :
